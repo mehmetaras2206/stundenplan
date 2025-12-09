@@ -214,6 +214,9 @@ class LocalDatabaseService {
         id: maps[i]['id'],
         name: maps[i]['name'],
         color: Color(maps[i]['color']),
+        weeklyGoalHours: maps[i]['weekly_goal_hours'] != null
+            ? (maps[i]['weekly_goal_hours'] as num).toDouble()
+            : null,
         createdAt: DateTime.parse(maps[i]['created_at']),
         updatedAt: DateTime.parse(maps[i]['updated_at']),
       );
@@ -228,6 +231,7 @@ class LocalDatabaseService {
         'id': category.id,
         'name': category.name,
         'color': category.color.toARGB32(),
+        'weekly_goal_hours': category.weeklyGoalHours,
         'created_at': category.createdAt.toIso8601String(),
         'updated_at': category.updatedAt.toIso8601String(),
       },
@@ -242,6 +246,7 @@ class LocalDatabaseService {
       {
         'name': category.name,
         'color': category.color.toARGB32(),
+        'weekly_goal_hours': category.weeklyGoalHours,
         'updated_at': category.updatedAt.toIso8601String(),
       },
       where: 'id = ?',
@@ -409,13 +414,16 @@ class LocalDatabaseService {
     required DateTime endDate,
   }) async {
     final db = await database;
+    // Query includes running activities and subtracts paused_duration
     final result = await db.rawQuery('''
       SELECT
         COALESCE(c.name, 'Ohne Kategorie') as category_name,
         SUM(
           CASE
-            WHEN at.end_time IS NULL THEN 0
-            ELSE (julianday(at.end_time) - julianday(at.start_time)) * 86400
+            WHEN at.end_time IS NULL THEN
+              (julianday('now') - julianday(at.start_time)) * 86400 - COALESCE(at.paused_duration, 0)
+            ELSE
+              (julianday(at.end_time) - julianday(at.start_time)) * 86400 - COALESCE(at.paused_duration, 0)
           END
         ) as total_seconds
       FROM activity_tracks at
@@ -428,7 +436,8 @@ class LocalDatabaseService {
     for (final row in result) {
       final categoryName = row['category_name'] as String;
       final totalSeconds = (row['total_seconds'] as num?)?.toInt() ?? 0;
-      stats[categoryName] = Duration(seconds: totalSeconds);
+      // Ensure no negative duration
+      stats[categoryName] = Duration(seconds: totalSeconds > 0 ? totalSeconds : 0);
     }
     return stats;
   }
@@ -438,13 +447,16 @@ class LocalDatabaseService {
     required DateTime endDate,
   }) async {
     final db = await database;
+    // Query includes running activities and subtracts paused_duration
     final result = await db.rawQuery('''
       SELECT
         activity_name,
         SUM(
           CASE
-            WHEN end_time IS NULL THEN 0
-            ELSE (julianday(end_time) - julianday(start_time)) * 86400
+            WHEN end_time IS NULL THEN
+              (julianday('now') - julianday(start_time)) * 86400 - COALESCE(paused_duration, 0)
+            ELSE
+              (julianday(end_time) - julianday(start_time)) * 86400 - COALESCE(paused_duration, 0)
           END
         ) as total_seconds
       FROM activity_tracks
@@ -457,7 +469,8 @@ class LocalDatabaseService {
     for (final row in result) {
       final activityName = row['activity_name'] as String;
       final totalSeconds = (row['total_seconds'] as num?)?.toInt() ?? 0;
-      stats[activityName] = Duration(seconds: totalSeconds);
+      // Ensure no negative duration
+      stats[activityName] = Duration(seconds: totalSeconds > 0 ? totalSeconds : 0);
     }
     return stats;
   }

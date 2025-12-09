@@ -96,7 +96,7 @@ class _ActivityStatsScreenState extends State<ActivityStatsScreen> with SingleTi
         controller: _tabController,
         children: [
           _buildStatsView(_todayStart, _todayEnd, 'Tag'),
-          _buildStatsView(_weekStart, _weekEnd, 'Kalenderwoche'),
+          _buildStatsView(_weekStart, _weekEnd, 'Kalenderwoche', isWeeklyView: true),
           _buildStatsView(_monthStart, _monthEnd, 'Kalendermonat'),
           _buildCustomWeekView(),
           _buildCustomMonthView(),
@@ -105,7 +105,7 @@ class _ActivityStatsScreenState extends State<ActivityStatsScreen> with SingleTi
     );
   }
 
-  Widget _buildStatsView(DateTime startDate, DateTime endDate, String period) {
+  Widget _buildStatsView(DateTime startDate, DateTime endDate, String period, {bool isWeeklyView = false}) {
     return Consumer<ActivityProvider>(
       builder: (context, activityProvider, _) {
         return FutureBuilder<Map<String, Duration>>(
@@ -291,9 +291,9 @@ class _ActivityStatsScreenState extends State<ActivityStatsScreen> with SingleTi
                                   ? (entry.value.inSeconds / totalDuration.inSeconds)
                                   : 0.0;
 
-                              // Find category object to check for weekly goal
+                              // Only show weekly goal in weekly views
                               final category = categoryMap[entry.key];
-                              final hasWeeklyGoal = category?.weeklyGoalHours != null;
+                              final hasWeeklyGoal = isWeeklyView && category?.weeklyGoalHours != null;
                               final trackedHours = entry.value.inMinutes / 60.0;
                               final goalHours = category?.weeklyGoalHours ?? 0;
                               final remainingHours = goalHours - trackedHours;
@@ -333,7 +333,7 @@ class _ActivityStatsScreenState extends State<ActivityStatsScreen> with SingleTi
                                       if (hasWeeklyGoal) ...[
                                         const SizedBox(height: 4),
                                         Text(
-                                          'Ziel: ${goalHours.toStringAsFixed(1)}h${period == 'Kalenderwoche' ? ' / Woche' : ''}',
+                                          'Ziel: ${goalHours.toStringAsFixed(1)}h / Woche',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey[600],
@@ -516,6 +516,7 @@ class _ActivityStatsScreenState extends State<ActivityStatsScreen> with SingleTi
             _customWeekStart!,
             _customWeekEnd!,
             'ausgewählte Woche',
+            isWeeklyView: true,
           ),
         ),
       ],

@@ -85,7 +85,7 @@ class _ActivityTrackerScreenState extends State<ActivityTrackerScreen> {
                         prefixIcon: Icon(Icons.fitness_center),
                       ),
                       hint: const Text('Aktivität wählen'),
-                      initialValue: _selectedPredefinedActivityId,
+                      value: _selectedPredefinedActivityId,
                       items: activityProvider.predefinedActivities.map((activity) {
                         return DropdownMenuItem<String>(
                           value: activity.id,
@@ -129,12 +129,12 @@ class _ActivityTrackerScreenState extends State<ActivityTrackerScreen> {
                     // Category filter first
                     DropdownButtonFormField<String?>(
                       decoration: const InputDecoration(
-                        labelText: 'Kategorie auswählen',
+                        labelText: 'Kategorie filtern (optional)',
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.category),
                       ),
-                      hint: const Text('Kategorie wählen'),
-                      initialValue: _selectedCategoryId,
+                      hint: const Text('Alle Kategorien'),
+                      value: _selectedCategoryId,
                       items: [
                         const DropdownMenuItem<String?>(
                           value: null,
@@ -176,7 +176,7 @@ class _ActivityTrackerScreenState extends State<ActivityTrackerScreen> {
                         prefixIcon: Icon(Icons.school),
                       ),
                       hint: const Text('Veranstaltung wählen'),
-                      initialValue: _selectedScheduleItemId,
+                      value: _selectedScheduleItemId,
                       items: scheduleProvider.scheduleItems
                           .where((item) =>
                               _selectedCategoryId == null ||
@@ -568,23 +568,42 @@ class _ActivityTrackerScreenState extends State<ActivityTrackerScreen> {
   }
 
   String _formatDateTime(DateTime dateTime) {
-    return '${dateTime.day}.${dateTime.month}. ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+    return '${dateTime.day}.${dateTime.month}.${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 
   String _formatTimeRange(DateTime start, DateTime? end) {
+    final now = DateTime.now();
+    final isCurrentYear = start.year == now.year;
+
+    String formatTime(DateTime dt) {
+      return '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+    }
+
+    String formatDate(DateTime dt, {bool includeYear = false}) {
+      if (includeYear) {
+        return '${dt.day}.${dt.month}.${dt.year}';
+      }
+      return '${dt.day}.${dt.month}.';
+    }
+
     // Check if same day
     if (end != null &&
         start.year == end.year &&
         start.month == end.month &&
         start.day == end.day) {
       // Same day: show date once, then time range
-      return '${start.day}.${start.month}.${start.year} | ${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')} - ${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}';
+      final showYear = !isCurrentYear;
+      return '${formatDate(start, includeYear: showYear)} | ${formatTime(start)} - ${formatTime(end)}';
     } else if (end != null) {
       // Different days: show full date and time for both
-      return '${start.day}.${start.month}. ${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')} - ${end.day}.${end.month}. ${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}';
+      final showYear = start.year != end.year || !isCurrentYear;
+      if (showYear) {
+        return '${formatDate(start, includeYear: true)} ${formatTime(start)} - ${formatDate(end, includeYear: true)} ${formatTime(end)}';
+      }
+      return '${formatDate(start)} ${formatTime(start)} - ${formatDate(end)} ${formatTime(end)}';
     } else {
       // Still running
-      return '${start.day}.${start.month}.${start.year} | ${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')} - läuft';
+      return '${formatDate(start, includeYear: !isCurrentYear)} | ${formatTime(start)} - läuft';
     }
   }
 

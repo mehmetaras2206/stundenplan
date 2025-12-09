@@ -349,6 +349,7 @@ class ActivityProvider extends ChangeNotifier {
     final minutes = duration.inMinutes.remainder(60);
     final seconds = duration.inSeconds.remainder(60);
 
+    // Show seconds only when duration is less than 1 minute
     if (hours > 0) {
       return '${hours}h ${minutes}m';
     } else if (minutes > 0) {

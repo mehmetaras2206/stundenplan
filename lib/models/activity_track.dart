@@ -56,8 +56,9 @@ class ActivityTrack {
     final minutes = d.inMinutes.remainder(60);
     final seconds = d.inSeconds.remainder(60);
 
+    // Show seconds only when duration is less than 1 minute
     if (hours > 0) {
-      return '${hours}h ${minutes}m ${seconds}s';
+      return '${hours}h ${minutes}m';
     } else if (minutes > 0) {
       return '${minutes}m ${seconds}s';
     } else {
