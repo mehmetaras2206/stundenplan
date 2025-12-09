@@ -2,106 +2,101 @@
 
 **Schedule & Time Tracking for Students**
 
-Eine moderne Flutter-App zur Verwaltung von Stundenplänen, Zeiterfassung und Terminen – mit lokaler Speicherung und optionaler Cloud-Synchronisierung.
+Eine Android-App zur Verwaltung von Stundenplänen und Zeiterfassung – komplett lokal, keine Cloud, keine Kosten.
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.9.2+-blue?logo=flutter)
-![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Windows-lightgrey)
-![License](https://img.shields.io/badge/License-Private-red)
+![Platform](https://img.shields.io/badge/Platform-Android-green?logo=android)
+![License](https://img.shields.io/badge/License-MIT-brightgreen)
+
+---
+
+## 💡 Warum diese App?
+
+Ich habe diese App entwickelt, um meinen eigenen Bedarf nach einer guten Stundenplan- und Zeiterfassungs-App zu decken – **ohne Geld für Pro-Versionen oder Abonnements auszugeben**.
+
+Alle verfügbaren Apps waren entweder:
+- Vollgestopft mit Werbung
+- Nur mit kostenpflichtiger Pro-Version nutzbar
+- Zu kompliziert oder nicht auf meine Bedürfnisse zugeschnitten
+
+Also habe ich mir selbst eine gebaut. 🚀
 
 ---
 
 ## ✨ Features
 
-### 📅 Stundenplan & Termine
-- **Kalenderansicht** mit Tages-, Wochen- und Monatsübersicht
-- **Termine erstellen, bearbeiten und löschen** mit Start-/Endzeit
-- **Kategorisierung** mit anpassbaren Farben
-- **Veranstaltungstypen** (Vorlesung, Übung, Seminar, etc.)
-- **Ortsangaben** für jeden Termin
-- **Wiederholende Termine** (in Vorbereitung)
+### 📅 Stundenplan
+- Kalenderansicht mit Tages-, Wochen- und Monatsübersicht
+- Termine mit Start-/Endzeit, Ort und Kategorie
+- Veranstaltungstypen (Vorlesung, Übung, Seminar, etc.)
+- Farbige Kategorisierung
 
 ### ⏱️ Zeittracker
-- **Aktivitäten tracken** – für Veranstaltungen oder eigene Aktivitäten
-- **Start, Pause, Stopp** mit Hintergrund-Tracking (Android)
-- **Detaillierte Statistiken** nach Tag, Woche und Monat
-- **Wochenziele** pro Kategorie mit Fortschrittsanzeige
-- **Vordefinierte Aktivitäten** zur schnellen Auswahl
+- Aktivitäten tracken – für Veranstaltungen oder eigene Aktivitäten
+- Start, Pause, Stopp mit Hintergrund-Tracking
+- Benachrichtigung mit Quick-Actions (Pause/Stop)
+- Vordefinierte Aktivitäten zur schnellen Auswahl
 
-### 📊 Statistiken & Auswertungen
-- **Dashboard** mit Gesamtübersicht
-- **Auswertung nach Aktivität und Kategorie**
-- **Fortschrittsbalken** und Prozentanzeigen
-- **Historische Daten** über Wochen- und Monatsauswahl
+### 📊 Statistiken
+- Auswertung nach Tag, Woche und Monat
+- Aufschlüsselung nach Aktivität und Kategorie
+- Wochenziele pro Kategorie mit Fortschrittsanzeige
 
-### 🎨 Design & Bedienung
-- **Material 3 Design** mit modernem Look
-- **Dark Mode** (Hell, Dunkel, System)
-- **Responsive Design** für alle Bildschirmgrößen
-- **Intuitive Navigation** mit Bottom Navigation Bar
+### 🎨 Design
+- Material 3 Design
+- Dark Mode (Hell, Dunkel, System)
+- Intuitive Navigation
 
-### 🔔 Benachrichtigungen (Android)
-- **Push-Benachrichtigungen** vor Terminen
-- **Foreground Service** für laufende Zeiterfassung
-- **Notification Actions** zum Pausieren/Stoppen
-
-### 💾 Datenverwaltung
-- **Lokale SQLite-Datenbank** – funktioniert offline
-- **Export/Import** als JSON-Backup
-- **Optionale Cloud-Sync** über Supabase
+### 💾 Daten
+- **100% lokal** – keine Cloud, keine Registrierung
+- Export/Import als JSON-Backup
+- SQLite-Datenbank
 
 ---
 
 ## 🚀 Installation
 
 ### Voraussetzungen
-- Flutter SDK 3.9.2 oder höher
-- Android Studio / VS Code mit Flutter Extensions
-- Für Windows: Visual Studio Build Tools
+- Flutter SDK 3.9.2+
+- Android Studio oder VS Code
+- Android SDK
 
-### Setup
+### Bauen & Installieren
 
 ```bash
 # Repository klonen
-git clone https://github.com/yourusername/unitrack.git
+git clone https://github.com/mehmetaras2206/unitrack.git
 cd unitrack
 
 # Dependencies installieren
 flutter pub get
 
-# App starten
-flutter run -d android    # Für Android
-flutter run -d windows    # Für Windows
-```
+# Auf Android-Gerät installieren (USB-Debugging aktivieren)
+flutter run
 
-### Release Build
-
-```bash
-# Android APK
+# Oder APK bauen
 flutter build apk --release
-
-# Windows
-flutter build windows --release
 ```
+
+Die APK findest du dann unter: `build/app/outputs/flutter-apk/app-release.apk`
 
 ---
 
 ## 📱 Verwendung
 
-### Termine verwalten
-1. **Neuer Termin**: Tap auf den FAB (+) im Stundenplan-Tab
-2. **Details eingeben**: Titel, Typ, Zeit, Ort und Kategorie
-3. **Bearbeiten/Löschen**: Tap auf einen Termin in der Liste
+### Stundenplan
+1. **+** Button → Neuen Termin erstellen
+2. Titel, Typ, Zeit, Ort und Kategorie eingeben
+3. Tap auf Termin zum Bearbeiten/Löschen
 
-### Zeit tracken
-1. **Aktivität starten**: Tap auf "Aktivität starten" im Zeittracker-Tab
-2. **Quelle wählen**: Vordefinierte Aktivität oder Veranstaltung
-3. **Pausieren/Beenden**: Buttons in der laufenden Aktivitäts-Karte
-4. **Statistiken ansehen**: Tap auf das Chart-Icon oben rechts
+### Zeittracker
+1. "Aktivität starten" → Aktivität oder Veranstaltung wählen
+2. Buttons zum Pausieren/Beenden
+3. Chart-Icon → Statistiken ansehen
 
-### Kategorien verwalten
-1. **Einstellungen → Kategorien**
-2. **Neue Kategorie**: Name, Farbe und optionales Wochenziel
-3. **Wochenziele**: Werden in den Wochen-Statistiken angezeigt
+### Kategorien
+1. Einstellungen → Kategorien
+2. Farbe und optionales Wochenziel setzen
 
 ---
 
@@ -109,29 +104,11 @@ flutter build windows --release
 
 ```
 lib/
-├── config/                 # Konfiguration (Supabase, etc.)
-├── models/                 # Datenmodelle
-│   ├── activity_track.dart     # Zeiterfassung
-│   ├── category.dart           # Kategorien
-│   ├── predefined_activity.dart
-│   └── schedule_item.dart      # Termine
-├── providers/              # State Management (Provider)
-│   ├── activity_provider.dart
-│   ├── schedule_provider.dart
-│   └── theme_provider.dart
-├── screens/                # UI Screens
-│   ├── activity/               # Zeittracker
-│   ├── categories/             # Kategorien-Verwaltung
-│   ├── home/                   # Hauptbildschirm
-│   ├── schedule/               # Stundenplan
-│   ├── settings/               # Einstellungen
-│   └── stats/                  # Statistiken
-├── services/               # Backend Services
-│   ├── local_database_service.dart
-│   ├── foreground_service.dart
-│   └── notification_service.dart
-├── widgets/                # Wiederverwendbare Widgets
-└── main.dart               # App Entry Point
+├── models/          # Datenmodelle
+├── providers/       # State Management (Provider)
+├── screens/         # UI Screens
+├── services/        # Database & Background Services
+└── widgets/         # Wiederverwendbare Widgets
 ```
 
 ---
@@ -140,57 +117,49 @@ lib/
 
 | Technologie | Verwendung |
 |-------------|------------|
-| **Flutter** | Cross-Platform Framework |
-| **Provider** | State Management |
-| **SQLite (sqflite)** | Lokale Datenbank |
-| **Table Calendar** | Kalender-Widget |
-| **Flutter Foreground Task** | Hintergrund-Tracking (Android) |
-| **Material 3** | Modernes UI Design |
-| **Supabase** | Optionale Cloud-Sync |
+| Flutter | Cross-Platform Framework |
+| Provider | State Management |
+| SQLite | Lokale Datenbank |
+| Table Calendar | Kalender-Widget |
+| Flutter Foreground Task | Hintergrund-Tracking |
+| Material 3 | UI Design |
 
 ---
 
 ## 📋 Roadmap
 
-- [x] Grundlegende Stundenplan-Verwaltung
-- [x] Kategorien mit Farbauswahl
-- [x] Zeittracker mit Pause-Funktion
-- [x] Statistiken nach Tag/Woche/Monat
-- [x] Wochenziele pro Kategorie
+- [x] Stundenplan-Verwaltung
+- [x] Kategorien mit Wochenzielen
+- [x] Zeittracker mit Pause
+- [x] Statistiken
 - [x] Dark Mode
-- [x] Export/Import Funktionalität
+- [x] Export/Import
 - [ ] Wiederkehrende Termine
-- [ ] Widget für Android Homescreen
-- [ ] iOS Support
-- [ ] Teilen von Terminen
+- [ ] Home-Screen Widget
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Build-Fehler beheben
 ```bash
+# Bei Build-Fehlern
 flutter clean
 flutter pub get
 flutter run
 ```
 
-### Android Benachrichtigungen funktionieren nicht
-- Überprüfen Sie die App-Berechtigungen in den Einstellungen
-- Batterie-Optimierung für die App deaktivieren
-
-### Windows Build schlägt fehl
-- Visual Studio Build Tools installieren
-- C++ Desktop Development Workload aktivieren
+**Benachrichtigungen funktionieren nicht?**
+- App-Berechtigungen prüfen
+- Batterie-Optimierung deaktivieren
 
 ---
 
 ## 📄 Lizenz
 
-Dieses Projekt ist für private Nutzung erstellt.
+MIT License – Frei verwendbar und modifizierbar.
 
 ---
 
 ## 🤝 Beitragen
 
-Bei Fragen, Bugs oder Feature-Requests erstellen Sie ein Issue im Repository.
+Pull Requests sind willkommen! Bei Bugs oder Feature-Wünschen einfach ein Issue erstellen.
