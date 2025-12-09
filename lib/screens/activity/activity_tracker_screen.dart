@@ -85,7 +85,7 @@ class _ActivityTrackerScreenState extends State<ActivityTrackerScreen> {
                         prefixIcon: Icon(Icons.fitness_center),
                       ),
                       hint: const Text('Aktivität wählen'),
-                      value: _selectedPredefinedActivityId,
+                      initialValue: _selectedPredefinedActivityId,
                       items: activityProvider.predefinedActivities.map((activity) {
                         return DropdownMenuItem<String>(
                           value: activity.id,
@@ -134,7 +134,7 @@ class _ActivityTrackerScreenState extends State<ActivityTrackerScreen> {
                         prefixIcon: Icon(Icons.category),
                       ),
                       hint: const Text('Alle Kategorien'),
-                      value: _selectedCategoryId,
+                      initialValue: _selectedCategoryId,
                       items: [
                         const DropdownMenuItem<String?>(
                           value: null,
@@ -176,7 +176,7 @@ class _ActivityTrackerScreenState extends State<ActivityTrackerScreen> {
                         prefixIcon: Icon(Icons.school),
                       ),
                       hint: const Text('Veranstaltung wählen'),
-                      value: _selectedScheduleItemId,
+                      initialValue: _selectedScheduleItemId,
                       items: scheduleProvider.scheduleItems
                           .where((item) =>
                               _selectedCategoryId == null ||
