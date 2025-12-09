@@ -1,4 +1,6 @@
-# 📚 Stundenplan App
+# 🎓 UniTrack
+
+**Schedule & Time Tracking for Students**
 
 Eine moderne Flutter-App zur Verwaltung von Stundenplänen, Zeiterfassung und Terminen – mit lokaler Speicherung und optionaler Cloud-Synchronisierung.
 
@@ -60,8 +62,8 @@ Eine moderne Flutter-App zur Verwaltung von Stundenplänen, Zeiterfassung und Te
 
 ```bash
 # Repository klonen
-git clone https://github.com/yourusername/stundenplan.git
-cd stundenplan
+git clone https://github.com/yourusername/unitrack.git
+cd unitrack
 
 # Dependencies installieren
 flutter pub get
